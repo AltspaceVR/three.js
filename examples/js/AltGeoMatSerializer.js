@@ -54,6 +54,7 @@ altspace._internal.AltGeoMatSerializer = function () {
 			}
 			if (
 				(geometry.needsUpdate || geoNeedsUpdate(geometry)) &&
+				geometry.faces && 
 				geometry.faces.length
 			) {
 				resetGeoFlags(geometry);
@@ -83,6 +84,14 @@ altspace._internal.AltGeoMatSerializer = function () {
 	};
 	var getDataUri = function (image) {
 		return new Promise(function (resolve) {
+			if (image.nodeName === 'CANVAS') {
+				resolve(image.toDataURL('image/png'));
+				return;
+			}
+			if (!image.src) {
+				resolve();
+				return;
+			}
 			var img = new Image();
 			var src = image.src;
 			var dummySrc = (

@@ -20,7 +20,15 @@
 			var renderer =  altspace.getThreeJSRenderer({version: '0.2.0'});
 			renderer.setSize = noop;
 			renderer.setPixelRatio = noop;
+			renderer.setClearColor = noop;
+			renderer.clear = noop;
+			renderer.enableScissorTest = noop;
+			renderer.setScissor = noop;
+			renderer.setViewport = noop;
+			renderer.getPixelRatio = noop;
 			renderer.getMaxAnisotropy = noop;
+			renderer.setFaceCulling = noop;
+			renderer.context = {canvas: {}};
 
 			Object.defineProperty(renderer, "domElement", {
 				get : function(){
