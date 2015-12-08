@@ -1,10 +1,6 @@
 (function () {
 	if (window.altspace) {
-		var scripts = [
-			'https://cdnjs.cloudflare.com/ajax/libs/core-js/1.1.4/core.min.js',
-			'js/AltGeoMatSerializer.js',
-			'js/AltRenderer.js'
-		];
+		var scripts = [];
 
 		scripts.forEach(function (src) {
 			// Use document.write to force blocking so that we can override 
