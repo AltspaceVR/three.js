@@ -68,8 +68,7 @@
 
 				scene = new THREE.Scene();
 
-				loader = new THREE.BinaryLoader( true );
-				document.body.appendChild( loader.statusDomElement );
+				loader = new THREE.BinaryLoader();
 
 				var callback = function( geometry ) {
 
@@ -77,13 +76,9 @@
 					object.scale.x = object.scale.y = object.scale.z = 0.80;
 					scene.add( object );
 
-					loader.statusDomElement.style.display = "none";
-
 				};
 
 				loader.load( "obj/walt/WaltHead_bin.js", callback );
-
-				scene.add( new THREE.AmbientLight( 0x000000 ) );
 
 				var sphere = new THREE.SphereGeometry( 0.5, 16, 8 );
 

@@ -1,5 +1,3 @@
-uniform vec3 ambientLightColor;
-
 #if MAX_DIR_LIGHTS > 0
 
 	uniform vec3 directionalLightColor[ MAX_DIR_LIGHTS ];
@@ -33,11 +31,5 @@ uniform vec3 ambientLightColor;
 	uniform float spotLightAngleCos[ MAX_SPOT_LIGHTS ];
 	uniform float spotLightExponent[ MAX_SPOT_LIGHTS ];
 	uniform float spotLightDecay[ MAX_SPOT_LIGHTS ];
-
-#endif
-
-#ifdef WRAP_AROUND
-
-	uniform vec3 wrapRGB;
 
 #endif

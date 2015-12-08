@@ -39,6 +39,7 @@ input.Number {
 
 	#viewport #info {
 		text-shadow: 1px 1px 0px rgba(0,0,0,0.25);
+		pointer-events: none;
 	}
 
 #script {
@@ -78,6 +79,7 @@ input.Number {
 	#menubar .menu.right {
 		float: right;
 		cursor: auto;
+		padding-right: 0px;
 		text-align: right;
 	}
 

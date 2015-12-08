@@ -23,7 +23,8 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 		segments: segments,
 		radius: radius,
 		radialSegments: radialSegments,
-		closed: closed
+		closed: closed,
+		taper: taper
 	};
 
 	segments = segments || 64;
@@ -67,7 +68,7 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 
 	}
 
-	// consruct the grid
+	// construct the grid
 
 	for ( i = 0; i < numpoints; i ++ ) {
 
@@ -98,6 +99,7 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 			grid[ i ][ j ] = vert( pos2.x, pos2.y, pos2.z );
 
 		}
+
 	}
 
 
@@ -107,8 +109,8 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 
 		for ( j = 0; j < radialSegments; j ++ ) {
 
-			ip = ( closed ) ? (i + 1) % segments : i + 1;
-			jp = (j + 1) % radialSegments;
+			ip = ( closed ) ? ( i + 1 ) % segments : i + 1;
+			jp = ( j + 1 ) % radialSegments;
 
 			a = grid[ i ][ j ];		// *** NOT NECESSARILY PLANAR ! ***
 			b = grid[ ip ][ j ];
@@ -127,6 +129,7 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 			this.faceVertexUvs[ 0 ].push( [ uvb.clone(), uvc, uvd.clone() ] );
 
 		}
+
 	}
 
 	this.computeFaceNormals();
@@ -136,6 +139,14 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 
 THREE.TubeGeometry.prototype = Object.create( THREE.Geometry.prototype );
 THREE.TubeGeometry.prototype.constructor = THREE.TubeGeometry;
+THREE.TubeGeometry.prototype.clone = function() {
+
+	return new this.constructor( this.parameters.path,
+		this.parameters.segments, this.parameters.radius, this.parameters.radialSegments,
+		this.parameters.closed, this.parameters.taper
+	);
+
+};
 
 THREE.TubeGeometry.NoTaper = function ( u ) {
 
@@ -163,7 +174,6 @@ THREE.TubeGeometry.FrenetFrames = function ( path, segments, closed ) {
 
 		numpoints = segments + 1,
 		theta,
-		epsilon = 0.0001,
 		smallest,
 
 		tx, ty, tz,
@@ -213,7 +223,8 @@ THREE.TubeGeometry.FrenetFrames = function ( path, segments, closed ) {
 	*/
 
 	function initialNormal3() {
-		// select an initial normal vector perpenicular to the first tangent vector,
+
+		// select an initial normal vector perpendicular to the first tangent vector,
 		// and in the direction of the smallest tangent xyz component
 
 		normals[ 0 ] = new THREE.Vector3();
@@ -224,23 +235,30 @@ THREE.TubeGeometry.FrenetFrames = function ( path, segments, closed ) {
 		tz = Math.abs( tangents[ 0 ].z );
 
 		if ( tx <= smallest ) {
+
 			smallest = tx;
 			normal.set( 1, 0, 0 );
+
 		}
 
 		if ( ty <= smallest ) {
+
 			smallest = ty;
 			normal.set( 0, 1, 0 );
+
 		}
 
 		if ( tz <= smallest ) {
+
 			normal.set( 0, 0, 1 );
+
 		}
 
 		vec.crossVectors( tangents[ 0 ], normal ).normalize();
 
 		normals[ 0 ].crossVectors( tangents[ 0 ], vec );
 		binormals[ 0 ].crossVectors( tangents[ 0 ], normals[ 0 ] );
+
 	}
 
 
@@ -254,7 +272,7 @@ THREE.TubeGeometry.FrenetFrames = function ( path, segments, closed ) {
 
 		vec.crossVectors( tangents[ i - 1 ], tangents[ i ] );
 
-		if ( vec.length() > epsilon ) {
+		if ( vec.length() > Number.EPSILON ) {
 
 			vec.normalize();
 
@@ -291,4 +309,5 @@ THREE.TubeGeometry.FrenetFrames = function ( path, segments, closed ) {
 		}
 
 	}
+
 };
