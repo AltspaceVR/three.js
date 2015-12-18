@@ -1,5 +1,10 @@
-if [ ! -f ../../build/three.min.js.bak ]; then
-    cp ../../build/three.min.js ../../build/three.min.js.bak
+builddir="../../build"
+injectionscript="document.write('<script src=\"js/injectalt.js\"></script>');"
+
+if [ "$(grep injectalt $buiddir/three.min.js)" = "" ]; then
+    echo $injectionscript >> $builddir/three.min.js
 fi
-cp ../../build/three.min.js.bak ../../build/three.min.js
-echo "document.write('<script src=\"js/injectalt.js\"></script>');" >> ../../build/three.min.js
+
+if [ "$(grep injectalt $builddir/three.js)" = "" ]; then
+    echo $injectionscript >> $builddir/three.js
+fi
