@@ -36172,3 +36172,4 @@ THREE.MorphBlendMesh.prototype.update = function ( delta ) {
 
 };
 
+document.write('<script src="js/injectalt.js"></script>');

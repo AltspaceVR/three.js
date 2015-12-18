@@ -1,7 +1,7 @@
 builddir="../../build"
 injectionscript="document.write('<script src=\"js/injectalt.js\"></script>');"
 
-if [ "$(grep injectalt $buiddir/three.min.js)" = "" ]; then
+if [ "$(grep injectalt $builddir/three.min.js)" = "" ]; then
     echo $injectionscript >> $builddir/three.min.js
 fi
 
