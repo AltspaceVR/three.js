@@ -46,6 +46,7 @@
 				camera.position.z = 500;
 
 				scene = new THREE.Scene();
+				scene.scale.multiplyScalar(0.1);
 
 				var geometry = new THREE.BoxGeometry( 100, 100, 100 );
 				var material = new THREE.MeshNormalMaterial();
@@ -54,7 +55,7 @@
 				root.position.x = 1000;
 				scene.add( root );
 
-				var amount = 200, object, parent = root;
+				var amount = 171, object, parent = root;
 
 				for ( var i = 0; i < amount; i ++ ) {
 
