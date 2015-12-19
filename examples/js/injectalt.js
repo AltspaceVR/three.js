@@ -5,7 +5,7 @@
 		if (DEBUG) {
 			var scripts = [
 				'../../UnityClient/js/src/AltGeoMatSerializer.js',
-				'../../UnityClient/js/src/AltThriftSerializer.js',
+				'../../UnityClient/js/src/AltSceneUpdateSerializer.js',
 				'../../UnityClient/js/src/AltRenderer.js'
 			];
 
@@ -51,7 +51,7 @@
 		THREE.Scene = function () {
 			var scene =  new THREE._Scene();
 			scene.scale.multiplyScalar(0.7);
-			scene.position.set(100, 0, 0);
+			scene.position.set(100, -100, 0);
 
 			return scene;
 		};
