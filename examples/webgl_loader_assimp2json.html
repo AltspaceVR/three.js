@@ -116,6 +116,7 @@
 				camera.position.set( 2, 4, 5 );
 
 				scene = new THREE.Scene();
+				scene.scale.multiplyScalar(10);
 				scene.fog = new THREE.FogExp2( 0x000000, 0.035 );
 
 				// Lights

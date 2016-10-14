@@ -69,6 +69,7 @@
 
 				// SCENE
 				scene = new THREE.Scene();
+				scene.scale.multiplyScalar(10);
 
 				// CAMERA
 				camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 10000 );
