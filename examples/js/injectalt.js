@@ -1,7 +1,7 @@
 (function () {
 	if (window.altspace) {
 		// Load source scripts dynamically for debugging.
-		var DEBUG = true;
+		var DEBUG = false;
 		if (DEBUG) {
 			var scripts = [
 				'../../UnityClient/js/src/AltGeoMatSerializer.js',
@@ -11,7 +11,7 @@
 
 			scripts.forEach(function (src) {
 				/* jshint -W060 */
-				// Use document.write to force blocking so that we can override 
+				// Use document.write to force blocking so that we can override
 				// the existing scripts.
 				document.write('<script src="' + src + '"></script>');
 				/* jshint +W060 */

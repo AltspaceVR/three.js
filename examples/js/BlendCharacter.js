@@ -4,7 +4,6 @@
 
 THREE.BlendCharacter = function () {
 
-	this.animations = {};
 	this.weightSchedule = [];
 	this.warpSchedule = [];
 
@@ -12,21 +11,40 @@ THREE.BlendCharacter = function () {
 
 		var scope = this;
 
-		var loader = new THREE.JSONLoader();
-		loader.load( url, function( geometry, materials ) {
+		var loader = new THREE.ObjectLoader();
+		loader.load( url, function( loadedObject ) {
 
-			var originalMaterial = materials[ 0 ];
-			originalMaterial.skinning = true;
+			// The exporter does not currently allow exporting a skinned mesh by itself
+			// so we must fish it out of the hierarchy it is embedded in (scene)
+			loadedObject.traverse( function( object ) {
 
-			THREE.SkinnedMesh.call( scope, geometry, originalMaterial );
+				if ( object instanceof THREE.SkinnedMesh ) {
+
+					scope.skinnedMesh = object;
+
+				}
+
+			} );
+
+			THREE.SkinnedMesh.call( scope, scope.skinnedMesh.geometry, scope.skinnedMesh.material );
+
+			// If we didn't successfully find the mesh, bail out
+			if ( scope.skinnedMesh == undefined ) {
+
+				console.log( 'unable to find skinned mesh in ' + url );
+				return;
+
+			}
+
+			scope.material.skinning = true;
 
 			scope.mixer = new THREE.AnimationMixer( scope );
+			scope.mixer = scope.mixer;
 
-			// Create the animations		
-			for ( var i = 0; i < geometry.animations.length; ++ i ) {
+			// Create the animations
+			for ( var i = 0; i < scope.geometry.animations.length; ++ i ) {
 
-				var animName = geometry.animations[ i ].name;
-				scope.animations[ animName ] = geometry.animations[ i ];
+				scope.mixer.clipAction( scope.geometry.animations[ i ] );
 
 			}
 
@@ -45,48 +63,44 @@ THREE.BlendCharacter = function () {
 
 	this.play = function( animName, weight ) {
 
-		this.mixer.removeAllActions();
-		
-		this.mixer.play( new THREE.AnimationAction( this.animations[ animName ] ) );
-
+		//console.log("play('%s', %f)", animName, weight);
+		return this.mixer.clipAction( animName ).
+				setEffectiveWeight( weight ).play();
 	};
 
 	this.crossfade = function( fromAnimName, toAnimName, duration ) {
 
-		this.mixer.removeAllActions();
- 
-		var fromAction = new THREE.AnimationAction( this.animations[ fromAnimName ] );
-		var toAction = new THREE.AnimationAction( this.animations[ toAnimName ] );
+		this.mixer.stopAllAction();
 
-		this.mixer.play( fromAction );
-		this.mixer.play( toAction );
+		var fromAction = this.play( fromAnimName, 1 );
+		var toAction = this.play( toAnimName, 1 );
 
-		this.mixer.crossFade( fromAction, toAction, duration, false );
+		fromAction.crossFadeTo( toAction, duration, false );
 
 	};
 
 	this.warp = function( fromAnimName, toAnimName, duration ) {
 
-		this.mixer.removeAllActions();
+		this.mixer.stopAllAction();
 
-		var fromAction = new THREE.AnimationAction( this.animations[ fromAnimName ] );
-		var toAction = new THREE.AnimationAction( this.animations[ toAnimName ] );
+		var fromAction = this.play( fromAnimName, 1 );
+		var toAction = this.play( toAnimName, 1 );
 
-		this.mixer.play( fromAction );
-		this.mixer.play( toAction );
-
-		this.mixer.crossFade( fromAction, toAction, duration, true );
+		fromAction.crossFadeTo( toAction, duration, true );
 
 	};
 
 	this.applyWeight = function( animName, weight ) {
 
-		var action = this.mixer.findActionByName( animName );
-		if( action ) {
-			action.weight = weight;
-		}
+		this.mixer.clipAction( animName ).setEffectiveWeight( weight );
 
 	};
+
+	this.getWeight = function( animName ) {
+
+		return this.mixer.clipAction( animName ).getEffectiveWeight();
+
+	}
 
 	this.pauseAll = function() {
 
@@ -103,7 +117,7 @@ THREE.BlendCharacter = function () {
 
 	this.stopAll = function() {
 
-		this.mixer.removeAllActions();
+		this.mixer.stopAllAction();
 
 	};
 

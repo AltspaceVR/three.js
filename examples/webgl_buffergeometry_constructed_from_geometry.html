@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 	<title>three.js - BufferGeometry constructed from Geometry Example</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta content="initial-scale=1.0, maximum-scale=1.0" name="viewport">
-	<meta name="Generator" content="https://callum.com">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<style>
 		body {
 			background-color: #000;
@@ -25,12 +24,12 @@
 		}
 		#title a {color:#ff0;}
 	</style>
-	<script type="text/javascript" src="../build/three.min.js"></script>
+	</head>
+	<body onload="app()">
+	<script type="text/javascript" src="../build/three.js"></script>
 	<script type="text/javascript" src="js/Detector.js"></script>
 	<script type="text/javascript" src="js/libs/stats.min.js"></script>
 	<script type="text/javascript" src="js/controls/TrackballControls.js"></script>
-	</head>
-	<body onload="app()">
 		<div id="title"></div>
 		<script>
 		var camera, scene, renderer, controls, stats;
@@ -80,9 +79,7 @@
 			controls.dynamicDampingFactor = 0.1;
 
 			stats = new Stats();
-			stats.domElement.style.position = 'absolute';
-			stats.domElement.style.top = '24px';
-			document.body.appendChild( stats.domElement );
+			document.body.appendChild( stats.dom );
 
 			window.addEventListener( 'resize', onWindowResize, false );
 
@@ -124,7 +121,7 @@
 			var positions = 0;
 			var normals = 0;
 			var colors = 0;
-			var shape_density = 14;
+			var shape_density = 7;
 
 			for ( var num_lat = 0; num_lat < shape_density / 2; ++ num_lat ) {
 

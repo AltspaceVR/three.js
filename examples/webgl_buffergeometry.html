@@ -33,7 +33,7 @@
 		<div id="container"></div>
 		<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> webgl - buffergeometry</div>
 
-		<script src="../build/three.min.js"></script>
+		<script src="../build/three.js"></script>
 
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
@@ -77,7 +77,7 @@
 
 				//
 
-				var triangles = 160000;
+				var triangles = 16000;
 
 				var geometry = new THREE.BufferGeometry();
 
@@ -185,9 +185,9 @@
 
 				geometry.computeBoundingSphere();
 
-				var material = new THREE.MeshPhongMaterial( {
-					color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
-					side: THREE.DoubleSide, vertexColors: THREE.VertexColors
+				var material = new THREE.MeshBasicMaterial( {
+					color: 0xaaaaaa,
+					vertexColors: THREE.VertexColors
 				} );
 
 				mesh = new THREE.Mesh( geometry, material );
@@ -208,9 +208,7 @@
 				//
 
 				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
-				stats.domElement.style.top = '0px';
-				container.appendChild( stats.domElement );
+				container.appendChild( stats.dom );
 
 				//
 
